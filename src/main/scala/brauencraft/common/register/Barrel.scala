@@ -12,8 +12,7 @@ object Barrel {
   }
   val whisky = Recipe(
     result = List(item.Whisky),
-    // requiredTick = 24000, //1day
-    requiredTick = 60, //1day
+    requiredTick = 24000, //1day
     materials = SortedSet(RecipeMaterial(item.NewMakeSpirits, CloseRange(1,1)))
   )
 }

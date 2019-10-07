@@ -36,4 +36,3 @@ case class Recipe(
     materials.size == ms.size && sameItems
   }
 }
-

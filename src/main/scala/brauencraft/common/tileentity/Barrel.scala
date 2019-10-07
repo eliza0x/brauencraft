@@ -1,6 +1,6 @@
 package brauencraft.common.tileentity
 
-import net.minecraft.item.Item
+import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
@@ -16,18 +16,38 @@ class Barrel extends TileEntity with ITickable {
   val container = new BarrelContainer
 
   override def update(): Unit = container.tick()
-  override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = super.writeToNBT(compound)
-  override def readFromNBT(compound: NBTTagCompound): Unit = super.readFromNBT(compound)
+
+  override def writeToNBT(compound: NBTTagCompound): Unit = {
+    // compound.setIntArray("items", container.getMaterials.map(_._1).toArray)
+    // compound.setIntArray("counts", container.getMaterials.map(_._2.toByte).toArray)
+    container.getMaterials.foreach { case (item, count) =>
+        new ItemStack(item, count).writeToNBT(compound)
+    }
+  }
+  override def readFromNBT(compound: NBTTagCompound): Unit = {
+    // val itemsByte = compound.getByteArray("items")
+    // val countsByte = compound.getByteArray("counts")
+    // if (itemsByte == null) throw Exception
+    // if (countsByte == null) throw Exception
+    // val items = itemsByte.map { byte: Byte => Item.getByNameOrId(byte.toString) }
+    // val counts = countsByte.map { byte: Byte => byte.toInt }
+    print(compound)
+  }
   override def getUpdatePacket: SPacketUpdateTileEntity = super.getUpdatePacket
   override def onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity): Unit = super.onDataPacket(net, pkt)
 }
 
-class BarrelContainer() {
+class BarrelContainer(
   private val materials: MutableMap[Item, Int] = MutableMap()
+) {
   private var currentRecipe: Option[Recipe] = None
   private var recentUpdateFrom: Int = 0
   val maxSolidItemSize: Int = 32
   val maxLiquidItemSize: Int = 1
+
+  updateCurrentRecipe()
+
+  def getMaterials: List[(Item, Int)] = materials.toList
 
   def getCurrentRecipe: Option[Recipe] = currentRecipe
 
@@ -81,4 +101,3 @@ class BarrelContainer() {
     Item.getByNameOrId("minecraft:wheat")
   )
 }
-

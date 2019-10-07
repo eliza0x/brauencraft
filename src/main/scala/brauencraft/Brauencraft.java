@@ -58,9 +58,6 @@ public class Brauencraft {
 
     }
 
-    /**
-     * Listen for the register event for creating custom items
-     */
     @Mod.EventBusSubscriber
     public static class ObjectRegistryHandler {
         @SubscribeEvent
@@ -68,14 +65,9 @@ public class Brauencraft {
            proxy.registerItem(event);
         }
 
-        /**
-         * Listen for the register event for creating custom blocks
-         */
         @SubscribeEvent
         public static void addBlocks(RegistryEvent.Register<Block> event) {
-           /*
-             event.getRegistry().register(new MySpecialBlock().setRegistryName(MOD_ID, "mySpecialBlock"));
-            */
+           proxy.registerTileEntitiy(event);
         }
     }
 }

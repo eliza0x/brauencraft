@@ -7,7 +7,12 @@ import brauencraft.common.item
 object Item {
   def register(event: RegistryEvent.Register[MCItem]): Unit = {
     event.getRegistry.registerAll(
-      item.HandMill
+      item.Barrel,
+      item.CoffeeBean,
+      item.CoffeePowder,
+      item.Mill,
+      item.NewMakeSpirits,
+      item.Whisky
     )
   }
 }
